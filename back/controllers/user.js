@@ -4,7 +4,7 @@ const User = require('../models/user');
 
 const jwt = require('jsonwebtoken');
 
-exports.signup = (req, res, next) => {
+/*exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
         const user = new User({
@@ -17,6 +17,28 @@ exports.signup = (req, res, next) => {
       })
       .catch(error => res.status(500).json({ error }));
   };
+*/
+
+const parseSalt = parseInt(process.env.SALT);
+
+exports.signup = (req, res, next) => {
+    bcrypt.genSalt(parseSalt)
+        .then(salt => { console.log(salt)
+            bcrypt.hash(req.body.password, salt)
+            .then(hash => { console.log(hash)
+                const user = new User({
+                email: req.body.email,
+                password: hash
+                });
+                user.save()
+                .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+                .catch(error => res.status(400).json({ error }));
+            })
+            .catch(error => res.status(500).json({ error }));
+        }
+    )
+} 
+
 
   exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
