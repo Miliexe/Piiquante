@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require("helmet");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.use(helmet());
 
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes)
