@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: false }));
 
 const limiter = rateLimit({
   max: 15,
