@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 
 const dotenv = require("dotenv");
 dotenv.config();
@@ -27,6 +28,14 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(helmet());
+
+const limiter = rateLimit({
+  max: 15,
+  windowMs: 5 * 60 * 1000,
+  message: "Too many request from this IP"
+});
+
+app.use(limiter);
 
 app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes)
