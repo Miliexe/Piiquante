@@ -1,7 +1,8 @@
+//Import des modules
 const validator = require("validator");
 
+//Contrôle de l'email
 module.exports = (req, res, next) => {
-  //si l'email renseigné est valide
   if (validator.isEmail(req.body.email)) {
     next();
   } else {

@@ -1,16 +1,17 @@
-//schema de validation:
+//Import des modules
 const passwordValidator = require("password-validator");
-const passwordSchema = new passwordValidator();
 
+//Configuration de la syntaxe du mot de passe
+const passwordSchema = new passwordValidator();
 passwordSchema
 .min(6, 'Le mot de passe doit contenir au moins 6 caractères.')           // Min 6 caractères
 .max(16, 'Le mot de passe doit contenir moins de 16 caractères.')         // Max 16 caractères
 .uppercase(1, 'Le mot de passe doit contenir au moins 1 majuscule.')      // Au moins 1 MAJ
 .lowercase(1, 'Le mot de passe doit contenir au moins 1 minuscule.')      // Au moins 1 MIN
-.digits(1, 'Le mot de passe doit contenir au moins 1 chiffre.')            // Au moins 1 chiffre
+.digits(1, 'Le mot de passe doit contenir au moins 1 chiffre.')           // Au moins 1 chiffre
 .has().not().spaces();                                                    // Ne doit pas avoir d'espaces
-//test du password saisit par l'utilisateur
 
+//Contrôle de conformité du mot de passe 
 module.exports = (req, res, next) => {
   if (passwordSchema.validate(req.body.password)) {
     next();
